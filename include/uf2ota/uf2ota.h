@@ -41,6 +41,16 @@ void uf2_ctx_free(uf2_ota_t *ctx);
 void uf2_info_free(uf2_info_t *info);
 
 /**
+ * @brief Mark flash area as write-protected. Any attempt to write a block there will return an error.
+ *
+ * @param ctx context
+ * @param offset absolute starting offset of the area
+ * @param length length of the area, in bytes
+ * @return uf2_err_t error code
+ */
+uf2_err_t uf2_wp_add(uf2_ota_t *ctx, uint32_t offset, uint32_t length);
+
+/**
  * @brief Check if block is valid.
  *
  * @param ctx context

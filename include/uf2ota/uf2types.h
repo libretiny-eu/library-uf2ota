@@ -44,6 +44,11 @@ typedef struct __attribute__((packed))
 } uf2_block_t;
 
 typedef struct {
+	uint32_t start;
+	uint32_t end;
+} uf2_wp_t;
+
+typedef struct {
 	uint32_t seq;					   // current block sequence number
 	uint32_t family_id;				   // expected family ID
 	uint32_t written;				   // actual written data length, in bytes
@@ -60,6 +65,9 @@ typedef struct {
 
 	uint32_t erased_offset;			   // offset of region erased during update
 	uint32_t erased_length;			   // length of erased region
+
+	uf2_wp_t *wp;					   // write protect areas array
+	uint8_t wp_len;					   // number of write protect areas
 
 	struct fal_partition *part_table;  // partition table
 	uint32_t part_table_len;		   // partition count
@@ -110,7 +118,7 @@ typedef enum {
 
 typedef enum {
 	UF2_ERR_OK			  = 0,
-	UF2_ERR_IGNORE		  = 1,	//!< block should be ignored
+	UF2_ERR_IGNORE		  = 1,	//!< block should be ignored, but is otherwise valid
 	UF2_ERR_MAGIC		  = 2,	//!< wrong magic numbers
 	UF2_ERR_FAMILY		  = 3,	//!< family ID mismatched
 	UF2_ERR_NOT_HEADER	  = 4,	//!< block is not a header
@@ -124,6 +132,8 @@ typedef enum {
 	UF2_ERR_ERASE_FAILED  = 12, //!< erasing flash failed
 	UF2_ERR_WRITE_FAILED  = 13, //!< writing to flash failed
 	UF2_ERR_WRITE_LENGTH  = 14, //!< wrote fewer data than requested
+	UF2_ERR_WRITE_PROTECT = 15, //!< target area is write-protected
+	UF2_ERR_ALLOC_FAILED  = 16, //!< dynamic memory allocation failed
 } uf2_err_t;
 
 // compatibility macros

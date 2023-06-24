@@ -26,6 +26,8 @@ void uf2_ctx_free(uf2_ota_t *ctx) {
 		return;
 	if (ctx->part_table_copied)
 		free(ctx->part_table);
+	if (ctx->wp)
+		free(ctx->wp);
 	memset(ctx, 0, sizeof(uf2_ota_t));
 }
 
@@ -37,6 +39,18 @@ void uf2_info_free(uf2_info_t *info) {
 	free(info->lt_version);
 	free(info->board);
 	memset(info, 0, sizeof(uf2_info_t));
+}
+
+uf2_err_t uf2_wp_add(uf2_ota_t *ctx, uint32_t offset, uint32_t length) {
+	uf2_wp_t *new_ptr = realloc(ctx->wp, (ctx->wp_len + 1) * sizeof(uf2_wp_t));
+	if (new_ptr == NULL)
+		return UF2_ERR_ALLOC_FAILED;
+	ctx->wp = new_ptr;
+
+	ctx->wp[ctx->wp_len].start = offset;
+	ctx->wp[ctx->wp_len].end   = offset + length;
+	ctx->wp_len++;
+	return UF2_ERR_OK;
 }
 
 uf2_err_t uf2_check_block(uf2_ota_t *ctx, const uf2_block_t *block) {
@@ -100,6 +114,18 @@ uf2_err_t uf2_write(uf2_ota_t *ctx, uf2_block_t *block) {
 	if (block->addr + block->len > part->len)
 		return UF2_ERR_WRITE_FAILED;
 	uint32_t offset = part->offset + block->addr;
+
+	// check write protect areas
+	uint32_t write_start = offset;
+	uint32_t write_end	 = offset + block->len;
+	for (uint8_t i = 0; i < ctx->wp_len; i++) {
+		uint32_t wp_start = ctx->wp[i].start;
+		uint32_t wp_end	  = ctx->wp[i].end;
+		if (wp_start >= write_start && wp_start < write_end)
+			return UF2_ERR_WRITE_PROTECT;
+		if (wp_end > write_start && wp_end <= write_end)
+			return UF2_ERR_WRITE_PROTECT;
+	}
 
 	int ret;
 	// erase sectors if needed
