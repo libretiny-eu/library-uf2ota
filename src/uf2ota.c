@@ -2,8 +2,10 @@
 
 #include "uf2priv.h"
 
-uf2_ota_t *uf2_ctx_init(uf2_ota_scheme_t scheme, uint32_t family_id) {
-	uf2_ota_t *ctx = calloc(1, sizeof(uf2_ota_t));
+void uf2_ctx_init(uf2_ota_t *ctx, uf2_ota_scheme_t scheme, uint32_t family_id) {
+	if (!ctx)
+		return;
+	memset(ctx, 0, sizeof(uf2_ota_t));
 	ctx->family_id = family_id;
 
 	ctx->scheme_byte	 = scheme >> 1;
@@ -11,13 +13,12 @@ uf2_ota_t *uf2_ctx_init(uf2_ota_scheme_t scheme, uint32_t family_id) {
 	ctx->scheme_binpatch = scheme == UF2_SCHEME_DEVICE_DUAL_2 || scheme == UF2_SCHEME_FLASHER_DUAL_2;
 
 	ctx->part_table = (struct fal_partition *)fal_get_partition_table((size_t *)&ctx->part_table_len);
-
-	return ctx;
 }
 
-uf2_info_t *uf2_info_init() {
-	uf2_info_t *info = calloc(1, sizeof(uf2_info_t));
-	return info;
+void uf2_info_init(uf2_info_t *info) {
+	if (!info)
+		return;
+	memset(info, 0, sizeof(uf2_info_t));
 }
 
 void uf2_ctx_free(uf2_ota_t *ctx) {
@@ -25,7 +26,7 @@ void uf2_ctx_free(uf2_ota_t *ctx) {
 		return;
 	if (ctx->part_table_copied)
 		free(ctx->part_table);
-	free(ctx);
+	memset(ctx, 0, sizeof(uf2_ota_t));
 }
 
 void uf2_info_free(uf2_info_t *info) {
@@ -35,7 +36,7 @@ void uf2_info_free(uf2_info_t *info) {
 	free(info->fw_version);
 	free(info->lt_version);
 	free(info->board);
-	free(info);
+	memset(info, 0, sizeof(uf2_info_t));
 }
 
 uf2_err_t uf2_check_block(uf2_ota_t *ctx, const uf2_block_t *block) {

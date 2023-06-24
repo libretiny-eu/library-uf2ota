@@ -9,23 +9,24 @@ extern "C" {
 #include "uf2types.h"
 
 /**
- * @brief Create an UF2 OTA context.
+ * @brief Initialize an UF2 OTA context.
  *
+ * @param ctx structure to initialize; may be NULL
  * @param scheme the device's target OTA scheme
  * @param family_id expected family ID
  * @return uf2_ota_t* heap-allocated structure
  */
-uf2_ota_t *uf2_ctx_init(uf2_ota_scheme_t scheme, uint32_t family_id);
+void uf2_ctx_init(uf2_ota_t *ctx, uf2_ota_scheme_t scheme, uint32_t family_id);
 
 /**
- * @brief Create an UF2 Info structure.
+ * @brief Initialize an UF2 Info structure.
  *
- * @return uf2_info_t* heap-allocated structure
+ * @param info structure to initialize; may be NULL
  */
-uf2_info_t *uf2_info_init();
+void uf2_info_init(uf2_info_t *info);
 
 /**
- * @brief Free values in the context AND the context itself.
+ * @brief Free values in the context.
  * Also restore the FAL partition table if changed during the update process.
  *
  * @param ctx structure to free; may be NULL
@@ -33,7 +34,7 @@ uf2_info_t *uf2_info_init();
 void uf2_ctx_free(uf2_ota_t *ctx);
 
 /**
- * @brief Free values in the info structure AND the structure itself.
+ * @brief Free values in the info structure.
  *
  * @param info structure to free; may be NULL
  */
