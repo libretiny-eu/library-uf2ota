@@ -121,7 +121,7 @@ uf2_err_t uf2_parse_part_info(uf2_ota_t *ctx, const uint8_t *tag, uint8_t tag_le
 	if (tag_len < 3)
 		return UF2_ERR_PART_INVALID;
 
-	uint8_t index = tag[ctx->scheme_byte] >> ctx->scheme_shift;
+	uint8_t index = (tag[ctx->scheme_byte] >> ctx->scheme_shift) & 0xF;
 	if (index == 0)
 		return UF2_ERR_OK;
 	if (index > 6)
