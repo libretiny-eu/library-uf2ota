@@ -1,0 +1,9 @@
+{
+	"name": "uf2ota",
+	"version": "4.0.0",
+	"description": "UF2-based OTA updates for IoT devices",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/libretiny-eu/library-uf2ota"
+	}
+}
