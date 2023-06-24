@@ -11,7 +11,7 @@
 
 #define UF2_BLOCK_SIZE sizeof(uf2_block_t)
 
-#define UF2OTA_VERSION 40000
+#define UF2OTA_VERSION 50000
 
 struct fal_partition;
 

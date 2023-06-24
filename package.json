@@ -1,5 +1,5 @@
 {
 	"name": "library-uf2ota",
-	"version": "4.0.0",
+	"version": "5.0.0",
 	"description": "UF2-based OTA updates for IoT devices"
 }
