@@ -21,7 +21,7 @@
  * @param info structure to write firmware info, NULL if not used
  * @return uf2_err_t error code
  */
-uf2_err_t uf2_parse_block(uf2_ota_t *ctx, uf2_block_t *block, uf2_info_t *info);
+uf2_err_t uf2_parse_block(uf2_ota_t *ctx, const uf2_block_t *block, uf2_info_t *info);
 
 /**
  * @brief Parse a tag.

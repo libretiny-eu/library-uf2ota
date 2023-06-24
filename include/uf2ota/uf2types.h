@@ -44,22 +44,22 @@ typedef struct __attribute__((packed))
 } uf2_block_t;
 
 typedef struct {
-	uint32_t seq;		// current block sequence number
-	uint32_t family_id; // expected family ID
-	uint32_t written;	// actual written data length, in bytes
+	uint32_t seq;					   // current block sequence number
+	uint32_t family_id;				   // expected family ID
+	uint32_t written;				   // actual written data length, in bytes
 
-	bool is_format_ok; // whether a compatible format tag has been found
-	bool is_part_set;  // whether OTA_PART_INFO has been found
+	bool is_format_ok;				   // whether a compatible format tag has been found
+	bool is_part_set;				   // whether OTA_PART_INFO has been found
 
-	uint8_t *binpatch;	  // current block's binpatch (if any) -> pointer inside block->data
-	uint8_t binpatch_len; // binpatch length
+	const uint8_t *binpatch;		   // current block's binpatch (if any) -> pointer inside block->data
+	uint8_t binpatch_len;			   // binpatch length
 
-	uint8_t scheme_byte;  // byte within OTA_PART_INFO containing the target partition index
-	uint8_t scheme_shift; // bit shift (>>) of the partition index byte
-	bool scheme_binpatch; // whether binpatch should be applied (= scheme is OTA2)
+	uint8_t scheme_byte;			   // byte within OTA_PART_INFO containing the target partition index
+	uint8_t scheme_shift;			   // bit shift (>>) of the partition index byte
+	bool scheme_binpatch;			   // whether binpatch should be applied (= scheme is OTA2)
 
-	uint32_t erased_offset; // offset of region erased during update
-	uint32_t erased_length; // length of erased region
+	uint32_t erased_offset;			   // offset of region erased during update
+	uint32_t erased_length;			   // length of erased region
 
 	struct fal_partition *part_table;  // partition table
 	uint32_t part_table_len;		   // partition count

@@ -46,7 +46,7 @@ void uf2_info_free(uf2_info_t *info);
  * @param block block to check
  * @return uf2_err_t error code; UF2_ERR_OK and UF2_ERR_IGNORE denote valid blocks
  */
-uf2_err_t uf2_check_block(uf2_ota_t *ctx, uf2_block_t *block);
+uf2_err_t uf2_check_block(uf2_ota_t *ctx, const uf2_block_t *block);
 
 /**
  * @brief Parse header block (LibreTiny UF2 first block).
@@ -58,7 +58,7 @@ uf2_err_t uf2_check_block(uf2_ota_t *ctx, uf2_block_t *block);
  * @param info structure to write firmware info, NULL if not used
  * @return uf2_err_t error code
  */
-uf2_err_t uf2_parse_header(uf2_ota_t *ctx, uf2_block_t *block, uf2_info_t *info);
+uf2_err_t uf2_parse_header(uf2_ota_t *ctx, const uf2_block_t *block, uf2_info_t *info);
 
 /**
  * @brief Write the block to flash memory.

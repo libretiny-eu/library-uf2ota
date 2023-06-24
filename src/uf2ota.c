@@ -38,7 +38,7 @@ void uf2_info_free(uf2_info_t *info) {
 	free(info);
 }
 
-uf2_err_t uf2_check_block(uf2_ota_t *ctx, uf2_block_t *block) {
+uf2_err_t uf2_check_block(uf2_ota_t *ctx, const uf2_block_t *block) {
 	if (block->magic1 != UF2_MAGIC_1)
 		return UF2_ERR_MAGIC;
 	if (block->magic2 != UF2_MAGIC_2)
@@ -54,7 +54,7 @@ uf2_err_t uf2_check_block(uf2_ota_t *ctx, uf2_block_t *block) {
 	return UF2_ERR_OK;
 }
 
-uf2_err_t uf2_parse_header(uf2_ota_t *ctx, uf2_block_t *block, uf2_info_t *info) {
+uf2_err_t uf2_parse_header(uf2_ota_t *ctx, const uf2_block_t *block, uf2_info_t *info) {
 	if (!block->has_tags || block->file_container || block->len)
 		// header must have tags and no data
 		return UF2_ERR_NOT_HEADER;

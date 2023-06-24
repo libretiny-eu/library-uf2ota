@@ -2,7 +2,7 @@
 
 #include "uf2priv.h"
 
-uf2_err_t uf2_parse_block(uf2_ota_t *ctx, uf2_block_t *block, uf2_info_t *info) {
+uf2_err_t uf2_parse_block(uf2_ota_t *ctx, const uf2_block_t *block, uf2_info_t *info) {
 	if (block->block_seq != ctx->seq)
 		// sequence number must match
 		return UF2_ERR_SEQ_MISMATCH;
@@ -17,8 +17,8 @@ uf2_err_t uf2_parse_block(uf2_ota_t *ctx, uf2_block_t *block, uf2_info_t *info) 
 		// at least one tag + last tag must fit
 		return UF2_ERR_DATA_TOO_LONG;
 
-	uint8_t *tags_pos = block->data + block->len;
-	uint8_t *tags_end = tags_pos + 476 - block->len;
+	const uint8_t *tags_pos = block->data + block->len;
+	const uint8_t *tags_end = tags_pos + 476 - block->len;
 	if (block->has_md5)
 		tags_end -= 24;
 
@@ -28,8 +28,8 @@ uf2_err_t uf2_parse_block(uf2_ota_t *ctx, uf2_block_t *block, uf2_info_t *info) 
 		if (!len)
 			break;
 		// skip tag header
-		uint8_t *tag	= tags_pos + 4;
-		uint8_t tag_len = len - 4;
+		const uint8_t *tag = tags_pos + 4;
+		uint8_t tag_len	   = len - 4;
 
 		char **str_dest = NULL; // char* to copy the tag into
 		uf2_err_t err	= UF2_ERR_OK;
